@@ -1,0 +1,53 @@
+---
+title: "Prueba de hipótesis y análisis de varianzas"
+author: "GUALAPURO, Moisés"
+date: "2023-04-25"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Prueba de hipótesis
+
+Para una pregunta de investigación se plantea una proposición que se debe verificar. La prueba de la hipótesis es la verificación, con un nivel de confianza, de si se cumple o no la proposición inicial. 
+### Data Orange
+
+La data ```orange``` tiene 35 registros del crecimiento de árboles de naranja. Las variables son: el número de árbol, la edad en días a partir del 31 de diciembre de 1968 y la circunferencia medido en milímetros. 
+
+```{r data}
+data(Orange)
+str(Orange)
+```
+El número de árboles es de tipo factor y se tiene 5 árboles. La edad y el diámetro son de tipo numérico. 
+
+```{r explora}
+summary(Orange)
+```
+## Visualización preliminar
+
+```{r plot1}
+library(ggplot2)
+ggplot(data = Orange, aes(x = age, y = circumference, 
+                          col = Tree)) +
+  geom_point()
+```
+
+La figura muestra que a medida que pasa el tiempo (edad) el diámetro de los árboles incrementa. El diámetro de los árboles 2 y 4 es mayor que la de los árboles 1 y 3. 
+
+## Planteamiento de la Hipótesis 
+
+La hipótesis nula (H0) es aquella donde se espera que no exista efecto. Es la más fácil de contradecir. 
+
+$H_{01}$: La edad del árbol no incide en el tamaño del diámetro. 
+$H_{02}$: Los árboles tienen el mismo diámetro a medida que pasa el tiempo.
+
+
+
+
+
+
+
+
+
