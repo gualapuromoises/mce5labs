@@ -3,6 +3,16 @@
 ## Regresión Lineal
 Explicación de la [regresión lineal](https://rpubs.com/joser/RegresionSimple). 
 
+- Supuestos para que exista la regresión lineal: 
+
+- 1. **Error distribuido normalmente**
+
+- 2. **Varianza es constante**
+
+-  3. **Medidas son independientes**
+
+- 4. **No me acuerdo**
+
 ## Análisis de varianza
 Explicación de la [análisis de varianza](https://rpubs.com/Joaquin_AR/219148). Más explicación de este tema.
 
