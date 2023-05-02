@@ -4,7 +4,7 @@
 Explicación de la [regresión lineal](https://rpubs.com/joser/RegresionSimple). 
 
 ## Análisis de varianza
-Explicación de la [regresión lineal](https://rpubs.com/joser/RegresionSimple). 
+Explicación de la [análisis de varianza](https://rpubs.com/Joaquin_AR/219148). Más explicación de este tema.
 
 ## Regresión lineal generalizada (GLM)
 Explicación de la [regresión lineal](https://rpubs.com/joser/RegresionSimple). 

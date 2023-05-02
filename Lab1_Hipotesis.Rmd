@@ -2,7 +2,7 @@
 title: "Prueba de hipótesis y análisis de varianzas"
 author: "GUALAPURO, Moisés"
 date: "2023-04-25"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -43,8 +43,42 @@ La hipótesis nula (H0) es aquella donde se espera que no exista efecto. Es la m
 $H_{01}$: La edad del árbol no incide en el tamaño del diámetro. 
 $H_{02}$: Los árboles tienen el mismo diámetro a medida que pasa el tiempo.
 
+```{r verificarH01}
+h01 <- lm(circumference ~ age, data = Orange)
+summary(h01)
+```
+
+Con un nivel de confianza del 90% se estima que el intercepto (el valor del diámetro sin efecto de la edad) es de 17.39 mm. 
+
+Con un nivel de confianza del 99.9% se estima que la pendiente (el cambio en mm del diámetro por cada día que pasa) es de 0.106 $\frac{mm}{dia}$. 
+
+Con un nivel de confianza del 90% la relación entre el diámetro de los árboles de naranja y la edad es: 
+
+$$
+D = 17.39 + 0.106 \cdot E
+$$
+
+Donde D es el diámetro en milimetros y E es la edad en días. 
 
 
+## Visualización de la regresión
+
+```{r reg1}
+ggplot(data = Orange, aes(x = age, y = circumference)) +
+  geom_point() + geom_smooth(method = "lm") + theme_classic() + 
+  labs(x = "Edad [días]", y = "Diámetro [mm]")
+
+```
+
+
+### Verificación la hipótesis 2
+
+```{r reg2}
+ggplot(data = Orange, aes(x = age, y = circumference, col = Tree)) +
+  geom_point() + geom_smooth(method = "lm") + theme_classic() + 
+  labs(x = "Edad [días]", y = "Diámetro [mm]")
+
+```
 
 
 

@@ -1,0 +1,166 @@
+---
+title: "Regresión lineal simple"
+author: "GUALAPURO, Moisés"
+date: "2023-05-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **Introducción**
+
+La correlación lineal y la regresión lineal simple son métodos estadísticos que estudian la relación lineal existente entre dos variables. Antes de profundizar en cada uno de ellos, conviene destacar algunas diferencias:
+
+-   La correlación cuantifica como de relacionadas están dos variables, mientras que la regresión lineal consiste en generar una ecuación (modelo) que, basándose en la relación existente entre ambas variables, permita predecir el valor de una a partir de la otra.
+
+-   El cálculo de la correlación entre dos variables es independiente del orden o asignación de cada variable a $X$ e $Y$, mide únicamente la relación entre ambas sin considerar dependencias. En el caso de la regresión lineal, el modelo varía según qué variable se considere dependiente de la otra (lo cual no implica causa-efecto).
+
+-   A nivel experimental, la correlación se suele emplear cuando ninguna de las variables se ha controlado, simplemente se han medido ambas y se desea saber si están relacionadas. En el caso de estudios de regresión lineal, es más común que una de las variables se controle (tiempo, concentración de reactivo, temperatura...) y se mida la otra.
+
+-   Por norma general, los estudios de correlación lineal preceden a la generación de modelos de regresión lineal. Primero se analiza si ambas variables están correlacionadas y, en caso de estarlo, se procede a generar el modelo de regresión.\
+
+# **Correlación lineal**
+
+Para estudiar la relación lineal existente entre dos variables continuas es necesario disponer de parámetros que permitan cuantificar dicha relación. Uno de estos parámetros es la *covarianza*, que indica el grado de variación conjunta de dos variables aleatorias.
+
+$$
+Covarianza muestral=Cov(X,Y)=\frac{\Sigma_{i=1}^{n}(xi− \overline{x})(yi−\overline{y})}{N−1}
+$$
+
+siendo $\overline{x}$ e $\overline{y}$ la media de cada variable y $x_i$ e $y_i$ el valor de las variables para la observación $i$
+
+La covarianza depende de las escalas en que se miden las variables estudiadas, por lo tanto, no es comparable entre distintos pares de variables. Para poder hacer comparaciones se estandariza la covarianza, generando lo que se conoce como *coeficientes de correlación*. Existen diferentes tipos, de entre los que destacan el *coeficiente de Pearson*, *Rho de Spearman* y *Tau de Kendall*.
+
+-   Todos ellos varían entre +1 y -1. Siendo +1 una correlación positiva perfecta y -1 una correlación negativa perfecta.
+
+-   Se emplean como medida de fuerza de asociación (tamaño del efecto):
+
+    -   0: asociación nula.
+
+    -   0.1: asociación pequeña.
+
+    -   0.3: asociación mediana.
+
+    -   0.5: asociación moderada.
+
+    -   0.7: asociación alta.
+
+    -   0.9: asociación muy alta.
+
+Las principales diferencias entre estos tres coeficientes de asociación son:
+
+-   La correlación de *Pearson* funciona bien con variables cuantitativas que tienen una distribución normal. *En el libro Handbook of Biological Statatistics se menciona que sigue siendo bastante robusto a pesar de la falta de normalidad*. Es más sensible a los valores extremos que las otras dos alternativas.
+
+-   La correlación de *Spearman* se emplea cuando los datos son ordinales, de intervalo, o bien cuando no se satisface la condición de normalidad para variables continuas y los datos se pueden transformar a rangos. Es un método no paramétrico.
+
+-   La correlación de *Kendall* es otra alternativa no paramétrica para el estudio de la correlación que trabaja con rangos. Se emplea cuando se dispone de pocos datos y muchos de ellos ocupan la misma posición en el rango, es decir, cuando hay muchas ligaduras.
+
+Además del valor obtenido para el coeficiente de correlación, es necesario calcular su significancia. Solo si el *p-value* es significativo se puede aceptar que existe correlación, y esta será de la magnitud que indique el coeficiente. Por muy cercano que sea el valor del coeficiente de correlación a +1+1 o −1−1, si no es significativo, se ha de interpretar que la correlación de ambas variables es 0, ya que el valor observado puede deberse a simple aleatoriedad.
+
+El test paramétrico de significancia estadística empleado para el coeficiente de correlación es el *t-test*. Al igual que ocurre siempre que se trabaja con muestras, por un lado está el parámetro estimado (en este caso el coeficiente de correlación) y por otro su significancia a la hora de considerar la población entera. Si se calcula el coeficiente de correlación entre X� e Y� en diferentes muestras de una misma población, el valor va a variar dependiendo de las muestras utilizadas. Por esta razón se tiene que calcular la significancia de la correlación obtenida y su intervalo de confianza.
+
+t=rN−2−−−−−√1−r2−−−−−√,   df=N−2�=��−21−�2,   ��=�−2
+
+Para este test de hipótesis, H0�0 considera que las variables son independientes (coeficiente de correlación poblacional = 0) mientras que, la Ha��, considera que existe relación (coeficiente de correlación poblacional ≠≠ 0)
+
+La correlación lineal entre dos variables, además del valor del coeficiente de correlación y de sus significancia, también tiene un tamaño de efecto asociado. Se conoce como *coeficiente de determinación* R2�2. Se interpreta como la cantidad de varianza de Y� explicada por X�. En el caso del coeficiente de *Pearson* y el de *Spearman*, R2�2 se obtiene elevando al cuadrado el coeficiente de correlación. En el caso de Kendall no se puede calcular de este modo. *(No he encontrado como se calcula)*.
+
+Mediante *bootstrapping* también se puede calcular la significancia de un coeficiente de correlación. Es una alternativa no paramétrica al *t-test*. [Resampling: Test de permutación, Simulación de Monte Carlo y Bootstrapping)](https://rpubs.com/Joaquin_AR/221778).\
+
+## **Coeficiente de Pearson**
+
+El coeficiente de correlación de Pearson es la covarianza estandarizada, y su ecuación difiere dependiendo de si se aplica a una muestra, *Coeficiente de Pearson muestral (r)*, o si se aplica la población *Coeficiente de Pearson poblacional (*ρ�).
+
+ρ=Cov(X,Y)σxσy�=���(�,�)����
+
+rxy=∑ni=1(xi−x¯¯¯)(yi−y¯¯¯)∑ni=1(xi−x¯¯¯)2∑ni=1−−−−−−−−−−−−−−−−√(yi−y¯¯¯)2¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯���=∑�=1�(��−�¯)(��−�¯)∑�=1�(��−�¯)2∑�=1�(��−�¯)2¯
+
+**Condiciones**
+
+-   La relación que se quiere estudiar entre ambas variables es lineal (de lo contrario, el coeficiente de Pearson no la puede detectar).
+
+-   Las dos variables deben de ser cuantitativas.
+
+-   Normalidad: ambas variables se tienen que distribuir de forma normal. *Varios textos defienden su robustez cuando las variables se alejan moderadamente de la normal.*
+
+-   Homocedasticidad: La varianza de Y� debe ser constante a lo largo de la variable X�. Esto se puede identificar si en el *scatterplot* los puntos mantienen la misma dispersión en las distintas zonas de la variable X�. *Esta condición no la he encontrado mencionada en todos los libros.*
+
+**Características**
+
+-   Toma valores entre [-1, +1], siendo +1 una correlación lineal positiva perfecta y -1 una correlación lineal negativa perfecta.
+
+-   Es una medida independiente de las escalas en las que se midan las variables.
+
+-   No varía si se aplican transformaciones a las variables.
+
+-   No tiene en consideración que las variables sean dependientes o independientes.
+
+-   El coeficiente de correlación de Pearson no equivale a la pendiente de la recta de regresión.
+
+-   Es sensible a *outliers*, por lo que se recomienda en caso de poder justificarlos, excluirlos del análisis.
+
+**Interpretación**
+
+Además del valor obtenido para el coeficiente, es necesario calcular su significancia. Solo si el *p-value* es significativo se puede aceptar que existe correlación y esta será de la magnitud que indique el coeficiente. Por muy cercano que sea el valor del coeficiente de correlación a +1 o -1, si no es significativo, se ha de interpretar que la correlación de ambas variables es 0 ya que el valor observado se puede deber al azar. (Ver más adelante como calcular la significancia).\
+
+## **Coeficiente de Spearman (Spearman\'s rho)**
+
+El coeficiente de *Spearman* es el equivalente al coeficiente de *Pearson* pero con una previa transformación de los datos a rangos. Se emplea como alternativa cuando los valores son ordinales, o bien, cuando los valores son continuos pero no satisfacen la condición de normalidad requerida por el coeficiente de Pearson y se pueden ordenar transformándolos en rangos. Al trabajar con rangos, es menos sensible que *Pearson* a valores extremos. Existe una diferencia adicional con respecto a *Pearson*. El coeficiente de *Spearman* requiere que la relación entre las variables sea monótona, es decir, que cuando una variable crece la otra también lo hace o cuando una crece la otra decrece (que la tendencia sea constante). Este concepto no es exactamente el mismo que linealidad.
+
+rs=1−6∑d2in(n2−1),��=1−6∑��2�(�2−1),
+
+Siendo di�� la distancia entre los rangos de cada observación (xi−yi��−��) y *n* el número de observaciones.\
+
+## **Coeficiente Tau de Kendall**
+
+Trabaja con rangos, por lo que requiere que las variables cuya relación se quiere estudiar sean ordinales o que se puedan transformar en rangos. Al ser no paramétrico, es otra alternativa al *Coeficiente de correlación de Pearson* cuando no se cumple la condición de normalidad. Parece ser más aconsejable que el coeficiente de *Spearman* cuando el número de observaciones es pequeño o los valores se acumulan en una región por lo que el número de ligaduras al generar los rangos es alto.
+
+τ=C−D12n(n−1),�=�−�12�(�−1),
+
+Siendo C� el número de pares concordantes, aquellos en los que el rango de la segunda variable es mayor que el rango de la primera variable. D� el número de pares discordantes, cuando el rango de la segunda es igual o menor que el rango de la primera variable.
+
+*Tau represents a probability; that is, it is the difference between the probability that the two variables are in the same order in the observed data versus the probability that the two variables are in different orders.*\
+
+## **Jackknife correlation**
+
+El coeficiente de correlación de *Pearson* resulta efectivo en ámbitos muy diversos. Sin embargo, tiene la desventaja de no ser robusto frente a *outliers* a pesar de que se cumpla la condición de normalidad. Si dos variables tienen un pico o un valle común en una única observación, por ejemplo por un error de lectura, la correlación va a estar dominada por este registro a pesar de que entre las dos variables no haya correlación real alguna. Lo mismo puede ocurrir en la dirección opuesta. Si dos variables están altamente correlacionadas excepto para una observación en la que los valores son muy dispares, entonces la correlación existente quedará enmascarada. Una forma de evitarlo es recurrir a la *Jackknife correlation*, que consiste en calcular todos los posibles coeficientes de correlación entre dos variables si se excluye cada vez una de las observaciones. El promedio de todas las *Jackknife correlations* calculadas atenuará en cierta medida el efecto del *outlier*.
+
+θ¯(A,B)=Promedio Jackknife correlation (A,B)=1n∑i=1nr^i�¯(�,�)=Promedio Jackknife correlation (A,B)=1�∑�=1��\^�
+
+Donde n� es el número de observaciones y r^i�^� es el coeficiente de correlación de *Pearson* estimado entre las variables A� y B�, habiendo excluido la observación i�.
+
+Además del promedio, se puede estimar su error estándar (SE��) y así obtener intervalos de confianza para la *Jackknife correlation* y su correspondiente *p-value*.
+
+SE=n−1n∑i=1n(r^i−θ¯)2−−−−−−−−−−−−−−−√��=�−1�∑�=1�(�\^�−�¯)2
+
+Intervalo de confianza del 95% (Z=1.96)(�=1.96)
+
+Promedio Jackknife correlation (A,B)± 1.96∗SEPromedio Jackknife correlation (A,B)± 1.96∗��
+
+θ¯−1.96n−1n∑i=1n(r^i−θ¯)2−−−−−−−−−−−−−−−√ ,  θ¯+1.96n−1n∑i=1n(r^i−θ¯)2−−−−−−−−−−−−−−−√�¯−1.96�−1�∑�=1�(�\^�−�¯)2 ,  �¯+1.96�−1�∑�=1�(�\^�−�¯)2
+
+*P-value* para la hipótesis nula de que θ¯=0�¯=0:
+
+Zcalculada=θ¯−H0SE=θ¯−0n−1n∑ni=1(r^i−θ¯)2−−−−−−−−−−−−−−−√����������=�¯−�0��=�¯−0�−1�∑�=1�(�\^�−�¯)2
+
+pvalue=P(Z>Zcalculada)������=�(�\>����������)
+
+Cuando se emplea este método es conveniente calcular la diferencia entre el valor de correlación obtenido por *Jackknife correlation* (θ¯)(�¯) y el que se obtiene si se emplean todas las observaciones (r¯)(�¯). A esta diferencia se le conoce como *Bias*. Su magnitud es un indicativo de cuanto está influenciada la estimación de la correlación entre dos variables debido a un valor atípico u *outlier*.
+
+Bias=(n−1)∗(θ¯−r^)����=(�−1)∗(�¯−�\^)
+
+Si se calcula la diferencia entre cada correlación (r^i)(�^�) estimada en el proceso de *Jackknife* y el valor de correlación (r^)(�^) obtenido si se emplean todas las observaciones, se puede identificar que observaciones son más influyentes.
+
+Cuando el estudio requiere minimizar al máximo la presencia de falsos positivos, a pesar de que se incremente la de falsos negativos, se puede seleccionar como valor de correlación el menor de entre todos los calculados en el proceso de *Jackknife*.
+
+Correlacion=min{r^1,r^2,...,r^n}Correlacion=���{�\^1,�\^2,\...,�\^�}
+
+A pesar de que el método de *Jackknife* permite aumentar la robustez de la correlación de *Pearson*, si los *outliers* son muy extremos su influencia seguirá siendo notable. Siempre es conveniente una representación gráfica de los datos para poder identificar si hay valores atípicos y eliminarlos. Otras alternativas robustas son la correlación de *Spearman* o el método de *Bootsrapping*.\
+
+## **Ejemplo correlación lineal**
+
+*Se dispone de un data set con información sobre diferentes coches. Se quiere estudiar si existe una correlación entre el peso de un vehículo (Weight) y la potencia de su motor (Horsepower).*
+
+R contiene funciones que permiten calcular los diferentes tipos de correlaciones y sus niveles de significancia: `cor()` y `cor.test()`. La segunda función es más completa ya que además de calcular el coeficiente de correlación indica su significancia (*p-value*) e intervalo de confianza.
